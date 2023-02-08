@@ -1,9 +1,0 @@
-# --------------------- Start the Server ----------------------------#
-FROM openjdk:17
-
-WORKDIR /usr/app/Shopme
-COPY ./ ./
-WORKDIR /usr/app/Shopme/ShopmeWebParent/ShopmeBackEnd
-
-COPY ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
-CMD ["java","-jar","./backend-app.jar"]
