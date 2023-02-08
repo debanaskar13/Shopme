@@ -7,10 +7,10 @@
 		<artifactId>ShopmeWebParent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>ShopmeBackEnd</artifactId>
-	<name>ShopmeBackEnd</name>
-	<description>Shopme Back End Project</description>
+	<artifactId>ShopmeFrontEnd</artifactId>
+	<name>ShopmeFrontEnd</name>
 	<packaging>jar</packaging>
+	<description>Shopme Web Application</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -22,10 +22,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<!--<configuration>
-					<excludeDevtools>false</excludeDevtools>
-					
-				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
