@@ -6,9 +6,9 @@ services:
       dockerfile:  Dockerfile.backend
     ports:
       - "8080:8080"
-  shopme-frontend:
-    build:
-      context: ./
-      dockerfile:  Dockerfile.frontend
-    ports:
-      - "80:80" 
+#  shopme-frontend:
+#    build:
+#      context: ./
+#      dockerfile:  Dockerfile.frontend
+#    ports:
+#      - "80:80" 
