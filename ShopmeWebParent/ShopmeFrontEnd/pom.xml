@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.shopme</groupId>
-		<artifactId>ShopmeWebParent</artifactId>
+		<artifactId>shopmewebparent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>ShopmeFrontEnd</artifactId>
-	<name>ShopmeFrontEnd</name>
+	<artifactId>shopmefrontend</artifactId>
+	<name>shopmefrontend</name>
 	<packaging>jar</packaging>
 	<description>Shopme Web Application</description>
 	<properties>

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shopme</groupId>
-	<artifactId>ShopmeCommon</artifactId>
+	<artifactId>shopmecommon</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ShopmeCommon</name>
+	<name>shopmecommon</name>
 	<description>Common Libray</description>
 	<properties>
 		<java.version>17</java.version>
