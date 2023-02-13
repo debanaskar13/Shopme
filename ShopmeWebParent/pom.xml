@@ -9,10 +9,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shopme</groupId>
-	<artifactId>ShopmeWebParent</artifactId>
+	<artifactId>shopmewebparent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>ShopmeWebParent</name>
+	<name>shopmewebparent</name>
 	<description>Parent Spring Web Project</description>
 	<properties>
 		<java.version>17</java.version>
@@ -64,7 +64,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.shopme</groupId>
-			<artifactId>ShopmeCommon</artifactId>
+			<artifactId>shopmecommon</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
