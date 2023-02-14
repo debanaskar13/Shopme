@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
+	<title>Create New User</title>
+
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div th:insert="fragments/navbar :: navbar"></div>
+		<div>
+			<h2>Manage Users | Create New User</h2>
+
+		</div>
+
+		<form th:action="@{/users/save}" method="post" style="max-width: 700px; margin: 0 auto;" th:object="${user}">
+			<div class="border border-secondary rounded p-3">
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">E-mail : </label>
+					<div class="col-sm-8">
+						<input type="email" name="" id="" class="form-control" th:field="*{email}" required
+							minlength="8" maxlength="128">
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">First Name : </label>
+					<div class="col-sm-8">
+						<input type="text" name="" id="" class="form-control" th:field="*{firstName}" required
+							minlength="2" maxlength="45">
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Last Name : </label>
+					<div class="col-sm-8">
+						<input type="text" name="" id="" class="form-control" th:field="*{lastName}" required
+							minlength="2" maxlength="45">
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Password : </label>
+					<div class="col-sm-8">
+						<input type="password" name="" id="" class="form-control" th:field="*{password}" required
+							minlength="8" maxlength="20">
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Roles : </label>
+					<div class="col-sm-8">
+						<th:block th:each="role : ${listRoles}">
+							<input type="checkbox" name="" id="" th:field="*{roles}" th:text="${role.name}"
+								th:value="${role.id}" class="m-2">
+							- <small>[[${role.description}]]</small>
+							<br>
+						</th:block>
+					</div>
+				</div>
+
+				<div class="form-group row m-2">
+					<label class="col-sm-4 col-form-label">Enabled : </label>
+					<div class="col-sm-8">
+						<input type="checkbox" name="" id="" th:field="*{enabled}">
+					</div>
+				</div>
+
+				<div class="text-center">
+					<input type="submit" value="Save" class="btn btn-primary m-3">
+					<input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel">
+				</div>
+			</div>
+		</form>
+
+		<div th:insert="fragments/footer :: footer"></div>
+	</div>
+
+
+
+	<script>
+		$(document).ready(function () {
+			$("#buttonCancel").on("click", function () {
+				window.location = "[[@{/users}]]";
+			})
+		})
+
+	</script>
+</body>
+
+</html>
