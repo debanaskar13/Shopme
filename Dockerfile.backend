@@ -4,10 +4,10 @@ FROM maven:3.8.2-eclipse-temurin-17
 WORKDIR /usr/app/Shopme
 COPY ./ ./
 
-RUN mvn clean package
-RUN cp ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
+# RUN mvn clean package
+# RUN cp ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
 
 
-# COPY ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
+COPY ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
 
 CMD ["java","-jar","backend-app.jar","--spring.datasource.url=jdbc:mysql://mysqldb/shopmedb"]

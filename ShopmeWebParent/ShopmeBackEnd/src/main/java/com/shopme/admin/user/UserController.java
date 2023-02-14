@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shopme.admin.util.Util;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
@@ -18,8 +19,18 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private Util util;
+
+	@Autowired
+	private RoleRepository roleRepo;
+	
 	@GetMapping("/users")
 	public String listAll(Model model) {
+		List<Role> roles =(List<Role>) roleRepo.findAll();
+		if(roles.isEmpty()) {
+			util.createAllRoles();
+		}
 		List<User> listUsers = userService.listAll();
 		model.addAttribute("listUsers",listUsers);
 		return "users";
