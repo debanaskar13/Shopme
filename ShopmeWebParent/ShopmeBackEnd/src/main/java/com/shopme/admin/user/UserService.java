@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.util.FileUploadUtil;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class UserService {
 
 	@Autowired
@@ -30,21 +34,22 @@ public class UserService {
 		return (List<Role>) roleRepo.findAll();
 	}
 
-	public void save(User user) {
+	public User save(User user) {
 		boolean isUpdatingUser = (user.getId() != null);
-		
-		if(isUpdatingUser) {
+
+		if (isUpdatingUser) {
 			User existingUser = userRepo.findById(user.getId()).get();
-			if(user.getPassword().isEmpty()) {
+			if (user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
-			}else {
+			} else {
 				encodePassword(user);
 			}
-		}else {			
+
+		} else {
 			encodePassword(user);
 		}
-		
-		userRepo.save(user);
+
+		return userRepo.save(user);
 	}
 
 	private void encodePassword(User user) {
@@ -54,14 +59,17 @@ public class UserService {
 
 	public boolean isEmailUnique(Integer id, String email) {
 		User userByEmail = userRepo.getUserByEmail(email);
-		if(userByEmail == null) return true;
-		
+		if (userByEmail == null)
+			return true;
+
 		boolean isCreatingNew = (id == null);
-		
-		if(isCreatingNew) {
-			if(userByEmail != null) return false;
-		}else {
-			if(userByEmail.getId() != id) return false;
+
+		if (isCreatingNew) {
+			if (userByEmail != null)
+				return false;
+		} else {
+			if (userByEmail.getId() != id)
+				return false;
 		}
 		return true;
 	}
@@ -73,27 +81,22 @@ public class UserService {
 			throw new UserNotFoundException("Could not find any user with user id " + id);
 		}
 	}
-	
+
 	public void delete(Integer id) throws UserNotFoundException {
 		Long countById = userRepo.countById(id);
-		if(countById == null || countById == 0) {
+		if (countById == null || countById == 0) {
 			throw new UserNotFoundException("Could not find any user with user id " + id);
 		}
-		
 		userRepo.deleteById(id);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void updateUserEnableStatus(Integer id, boolean enabled) throws UserNotFoundException {
+		Long countById = userRepo.countById(id);
+		if (countById == null || countById == 0) {
+			throw new UserNotFoundException("Could not find any user with user id " + id);
+		}
+
+		userRepo.updateEnabledStatus(id, enabled);
+	}
+
 }
