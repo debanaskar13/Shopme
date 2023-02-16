@@ -7,6 +7,8 @@
 	<title>Home - Shopme Admin</title>
 
 	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/css/all.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
@@ -18,15 +20,15 @@
 		<div th:insert="fragments/navbar :: navbar"></div>
 		<div>
 			<h2>Manage Users</h2>
-			<a th:href="@{/users/new}">Create New User</a>
+			<a th:href="@{/users/new}" class="btn btn-primary m-2">Create New User</a>
 		</div>
-
-		<div th:if="${message != null}" class="alert alert-success text-center">
+		<div th:if="${message != null}" class="alert alert-success text-center fs-5" id="successMessage">
 			[[${message}]]
+			<span role="button" id="SuccessMessageCloseBtn" style="float: right;">&times;</span>
 		</div>
 
 		<div>
-			<table class="table table-responsive-xl table-bordered">
+			<table class="table table-responsive-xl table-bordered table-striped table-hover">
 				<thead class="table-dark">
 					<tr>
 						<th>User ID</th>
@@ -36,28 +38,84 @@
 						<th>Last Name</th>
 						<th>Roles</th>
 						<th>Enabled</th>
-						<th></th>
+						<th>Photos</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="user : ${listUsers}">
 						<td>[[${user.id}]]</td>
-						<td></td>
+						<td>
+							<span th:if="${user.photos == null}"
+								class="fa-solid fa-image-portrait fa-3x icon-silver"></span>
+							<img style="width: 100px;" th:if="${user.photos != null}"
+								th:src="@{${user.photosImagePath}}">
+						</td>
 						<td>[[${user.email}]]</td>
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td>[[${user.enabled}]]</td>
+
 						<td>
-							Edit &nbsp; Delete
+							<a th:if="${user.enabled==true}" th:href="@{'/users/'+${user.id}+'/enabled/false'}"
+								class="fa-solid fa-circle-check fa-2x icon-green" title="Disable this user"></a>
+							<a th:if="${user.enabled==false}" th:href="@{'/users/'+${user.id}+'/enabled/true'}"
+								class="fa-solid fa-circle fa-2x icon-dark" title="Enable this user"></a>
+						</td>
+
+						<td>
+							<a th:href="@{'/users/edit/'+${user.id}}" title="Edit this user"
+								class="fa-solid fa-pen-to-square icon-green fa-2x"></a>
+							&nbsp;
+							<a th:href="@{'/users/delete/'+${user.id}}" title="delete this user" th:userId="${user.id}"
+								class="fa-solid fa-trash icon-dark fa-2x link-delete"></a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
+		<div class="modal fade text-center" id="confirmModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Delete Confirmation</h4>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+					</div>
+					<div class="modal-body">
+						<span id="modalBody"></span>
+					</div>
+					<div class="modal-footer">
+						<a type="button" class="btn btn-success" href="" id="yesBtn">Yes</a>
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div th:insert="fragments/footer :: footer"></div>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			setTimeout(function () {
+				$("#successMessage").fadeOut("slow");
+			}, 3000);
+
+			$("#SuccessMessageCloseBtn").on("click", function () {
+				$("#successMessage").fadeOut("slow");
+			})
+
+			$(".link-delete").on("click", function (e) {
+				e.preventDefault();
+				link = $(this);
+				userId = link.attr("userId");
+				$("#modalBody").text("Are you sure want to delete this user ID : " + userId + " ?");
+				$("#yesBtn").attr("href", link.attr("href"));
+				$("#confirmModal").modal("show");
+			});
+
+
+		})
+	</script>
 </body>
 
 </html>

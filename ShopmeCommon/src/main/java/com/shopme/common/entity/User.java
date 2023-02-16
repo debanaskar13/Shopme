@@ -1,7 +1,6 @@
 package com.shopme.common.entity;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -13,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "users")
@@ -34,10 +34,10 @@ public class User {
 	@ManyToMany
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
+	
 
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public User(String email, String password, String firstName, String lastName) {
@@ -116,15 +116,18 @@ public class User {
 		this.roles.add(role);
 	}
 
-	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", email=" + email + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", roles=" + roles + "]";
 	}
+	
+	@Transient
+	public String getPhotosImagePath() {
+		if(id == null || photos == null) {
+			return "/images/default-user.png";
+		}
+		return "/user-photos/"+this.id+"/"+this.photos;
+	}
 
-	
-	
-	
-	
 }
