@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployement
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: server
+  template:
+    metadata:
+      labels:
+        component: server
+    spec:
+      volumes:
+          - name: photos-storage
+            persistentVolumeClaim:
+              claimName: database-persistent-volume-claim
+      containers:
+      - name: server
+        image: dna13/shopme-server
+        volumeMounts:
+          - name: photos-storage
+            mountPath: /usr/app/ShopmeWebParent/ShopmeBackEnd/user-photos
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MYSQL_HOST
+            value: mysql-cluster-ip-service:3306
+          
