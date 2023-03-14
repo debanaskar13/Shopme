@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -37,8 +38,30 @@ public class UserController {
 		if (roles.isEmpty()) {
 			util.createAllRoles();
 		}
-		List<User> listUsers = userService.listAll();
+		return listByPage(1, model);
+	}
+
+	@GetMapping("/users/page/{pageNum}")
+	public String listByPage(@PathVariable("pageNum") int pageNum, Model model) {
+		Page<User> page = userService.listByPage(pageNum);
+		List<User> listUsers = page.getContent();
+
+		long startCount = (pageNum - 1) * UserService.USER_PER_PAGE + 1;
+		long endCount = startCount + UserService.USER_PER_PAGE - 1;
+		long totalItems = page.getTotalElements();
+		if(endCount>totalItems && startCount>totalItems){
+			totalItems = 0;
+		}else if(endCount>totalItems) {
+			endCount = page.getTotalElements();
+		}
+
+		model.addAttribute("currentPage",pageNum);
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("startCount",startCount);
+		model.addAttribute("endCount",endCount);
+		model.addAttribute("totalItems",totalItems);
 		model.addAttribute("listUsers", listUsers);
+
 		return "users";
 	}
 
@@ -56,24 +79,25 @@ public class UserController {
 	}
 
 	@PostMapping("/users/save")
-	public String saveUser(User user, RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+	public String saveUser(User user, RedirectAttributes redirectAttributes,
+			@RequestParam("image") MultipartFile multipartFile) throws IOException {
 		System.out.println(multipartFile.isEmpty());
-		if(!multipartFile.isEmpty()) {
+		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
 			User savedUser = userService.save(user);
-			
-			String uploadDir = "user-photos/"+savedUser.getId();
-			
+
+			String uploadDir = "user-photos/" + savedUser.getId();
+
 			FileUploadUtil.cleanDir(uploadDir);
-			
+
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}else {
+		} else {
 			System.out.println(user.getPhotos().isEmpty());
-			if(user.getPhotos().isEmpty()) user.setPhotos(null);
+			if (user.getPhotos().isEmpty())
+				user.setPhotos(null);
 			userService.save(user);
 		}
-		
 
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully");
 
@@ -100,8 +124,8 @@ public class UserController {
 	public String deleteUser(@PathVariable("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			userService.delete(id);
-			
-			String imageDir = "user-photos/"+id;
+
+			String imageDir = "user-photos/" + id;
 			FileUploadUtil.deleteDir(imageDir);
 			redirectAttributes.addFlashAttribute("message", "The user ID " + id + " has been deleted successfully");
 		} catch (UserNotFoundException e) {
@@ -111,16 +135,15 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}/enabled/{status}")
-	public String updateUserEnabledStatus(@PathVariable("id") Integer id,@PathVariable("status") boolean enabled,
+	public String updateUserEnabledStatus(@PathVariable("id") Integer id, @PathVariable("status") boolean enabled,
 			RedirectAttributes redirectAttributes) {
 		try {
-			userService.updateUserEnableStatus(id,enabled);
+			userService.updateUserEnableStatus(id, enabled);
 			redirectAttributes.addFlashAttribute("message",
 					"The user ID " + id + " has been " + (enabled ? "enabled" : "disabled") + " successfully");
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}
-		
 
 		return "redirect:/users";
 	}
