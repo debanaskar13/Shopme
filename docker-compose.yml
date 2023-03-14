@@ -23,14 +23,17 @@ services:
     env_file: ./.env
     ports:
       - "$SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT"
-
+    environment:
+      - MYSQL_HOST=mysqldb
     volumes:
-      - .m2:/root/.m2
+      - m2:/root/.m2
+      - user_photos:/usr/app/ShopmeWebParent/ShopmeBackEnd/user-photos
     stdin_open: true
     tty: true
 
 volumes:
   db:
-  .m2:
+  m2:
+  user_photos:
 
 

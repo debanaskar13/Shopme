@@ -1,13 +1,36 @@
-# --------------------- Start the Server ----------------------------#
 FROM maven:3.8.2-eclipse-temurin-17
+ENV HOME=/usr/app
+RUN mkdir -p $HOME
+WORKDIR $HOME
+ARG MYSQL_HOST
 
-WORKDIR /usr/app/Shopme
-COPY ./ ./
+ADD pom.xml $HOME
+ADD ShopmeCommon/pom.xml $HOME/ShopmeCommon/pom.xml
+ADD ShopmeWebParent/pom.xml $HOME/ShopmeWebParent/pom.xml
+ADD ShopmeWebParent/ShopmeBackEnd/pom.xml $HOME/ShopmeWebParent/ShopmeBackEnd/pom.xml
+ADD ShopmeWebParent/ShopmeFrontEnd/pom.xml $HOME/ShopmeWebParent/ShopmeFrontEnd/pom.xml
 
-# RUN mvn clean package
-# RUN cp ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
+RUN mvn -pl ShopmeCommon verify --fail-never
+ADD ShopmeCommon $HOME/ShopmeCommon
+RUN mvn -pl ShopmeCommon install
+
+RUN mvn -pl ShopmeWebParent verify --fail-never
+ADD ShopmeWebParent $HOME/ShopmeWebParent
+RUN mvn -pl ShopmeWebParent install
+
+RUN mvn -pl ShopmeWebParent/ShopmeBackEnd verify --fail-never
+ADD ShopmeWebParent/ShopmeBackEnd $HOME/ShopmeWebParent/ShopmeBackEnd
+RUN mvn -pl ShopmeWebParent/ShopmeBackEnd install
+
+RUN mvn -pl ShopmeWebParent/ShopmeFrontEnd verify --fail-never
+ADD ShopmeWebParent/ShopmeFrontEnd $HOME/ShopmeWebParent/ShopmeFrontEnd
+RUN mvn -pl ShopmeWebParent/ShopmeFrontEnd install
 
 
-COPY ./ShopmeWebParent/ShopmeBackEnd/target/*.jar backend-app.jar
+RUN mvn -pl ShopmeCommon,ShopmeWebParent,ShopmeWebParent/ShopmeBackEnd,ShopmeWebParent/ShopmeFrontEnd package
 
-CMD ["java","-jar","backend-app.jar","--spring.datasource.url=jdbc:mysql://mysqldb/shopmedb"]
+
+WORKDIR /usr/app/ShopmeWebParent/ShopmeBackEnd
+RUN cp ./target/*.jar backend-app.jar
+
+CMD java -jar backend-app.jar --MYSQL_HOST=${MYSQL_HOST}
