@@ -31,15 +31,19 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 
 	public List<User> listAll() {
-		return (List<User>) userRepo.findAll();
+		return (List<User>) userRepo.findAll(Sort.by("firstName").ascending());
 	}
 
-	public Page<User> listByPage(int pageNum, String sortField, String sortDir) {
+	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword) {
 		Sort sort = Sort.by(sortField);
 
 		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
 
 		Pageable pageable = PageRequest.of(pageNum - 1, USER_PER_PAGE, sort).toOptional().get();
+		
+		if(keyword!=null){
+			return userRepo.findAll(keyword, pageable);
+		}
 		return userRepo.findAll(pageable);
 	}
 
@@ -103,13 +107,14 @@ public class UserService {
 		userRepo.deleteById(id);
 	}
 
-	public void updateUserEnableStatus(Integer id, boolean enabled) throws UserNotFoundException {
+	public User updateUserEnableStatus(Integer id, boolean enabled) throws UserNotFoundException {
 		Long countById = userRepo.countById(id);
 		if (countById == null || countById == 0) {
 			throw new UserNotFoundException("Could not find any user with user id " + id);
 		}
 
 		userRepo.updateEnabledStatus(id, enabled);
+		return userRepo.findById(id).get();
 	}
 
 }

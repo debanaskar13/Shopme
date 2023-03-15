@@ -14,13 +14,13 @@
 
 <body>
 	<div class="container-fluid">
-		<div th:insert="fragments/navbar :: navbar"></div>
+		<div th:replace="fragments :: navbar"></div>
 		<div>
 			<h1>Shopme Admin Control Panel</h1>
 		</div>
 
 
-		<div th:insert="fragments/footer :: footer"></div>
+		<div th:replace="fragments :: footer"></div>
 	</div>
 
 </body>
