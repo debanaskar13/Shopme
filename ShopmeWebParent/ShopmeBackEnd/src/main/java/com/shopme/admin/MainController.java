@@ -8,7 +8,11 @@ public class MainController {
 	
 	@GetMapping("")
 	public String viewHomePage() {
-		
 		return "index";
+	}
+
+	@GetMapping("/login")
+	public String viewLoginPage(){
+		return "login";
 	}
 }

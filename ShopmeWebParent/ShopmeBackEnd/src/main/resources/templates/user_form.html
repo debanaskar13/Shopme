@@ -14,7 +14,7 @@
 
 <body>
 	<div class="container-fluid">
-		<div th:insert="fragments/navbar :: navbar"></div>
+		<div th:replace="fragments :: navbar"></div>
 		<div>
 			<h2>Manage Users | [[${pageTitle}]]</h2>
 
@@ -111,7 +111,7 @@
 			</div>
 		</div>
 
-		<div th:insert="fragments/footer :: footer"></div>
+		<div th:replace="fragments :: footer"></div>
 	</div>
 
 

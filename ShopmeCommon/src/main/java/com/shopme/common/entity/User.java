@@ -14,9 +14,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
@@ -38,7 +36,7 @@ public class User {
 	private String photos;
 	private boolean enabled;
 	@ManyToMany
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 
 	public User(String email, String password, String firstName, String lastName) {
@@ -65,6 +63,11 @@ public class User {
 			return "/images/default-user.png";
 		}
 		return "/user-photos/" + this.id + "/" + this.photos;
+	}
+
+	@Transient
+	public String getFullName(){
+		return firstName+" "+lastName;
 	}
 
 }
