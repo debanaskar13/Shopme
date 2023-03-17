@@ -14,9 +14,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users")
@@ -65,6 +63,11 @@ public class User {
 			return "/images/default-user.png";
 		}
 		return "/user-photos/" + this.id + "/" + this.photos;
+	}
+
+	@Transient
+	public String getFullName(){
+		return firstName+" "+lastName;
 	}
 
 }

@@ -37,7 +37,8 @@
         </nav>
     </div>
 
-    <th th:fragment="column_link(fieldName, columnLabel)">
+    <th th:class="${(fieldName=='email' || fieldName=='id')?'hideable-column':''}"  
+        th:fragment="column_link(fieldName, columnLabel)">
         <a class="text-white text-decoration-none"
             th:href="@{'/users/page/'+${currentPage}+'?sortField=' + ${fieldName} + '&sortDir=' + ${sortField == fieldName ? reverseSortDir : sortDir} + ${keyword !=null ? '&keyword='+ keyword : ''}}">
             [[${columnLabel}]]
