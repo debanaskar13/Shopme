@@ -2,5 +2,5 @@
 
 -- SHOW TABLES;
 
-SELECT * FROM users;
+SELECT * FROM roles;
 

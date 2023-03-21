@@ -82,7 +82,7 @@ public class UserController {
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);
 
-		return "users";
+		return "users/users";
 	}
 
 	@GetMapping("/users/new")
@@ -95,13 +95,12 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles", listRoles);
 
-		return "user_form";
+		return "users/user_form";
 	}
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
-		System.out.println(multipartFile.isEmpty());
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
@@ -113,7 +112,6 @@ public class UserController {
 
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 		} else {
-			System.out.println(user.getPhotos().isEmpty());
 			if (user.getPhotos().isEmpty())
 				user.setPhotos(null);
 			userService.save(user);
@@ -137,7 +135,7 @@ public class UserController {
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
 			model.addAttribute("user", user);
 			model.addAttribute("listRoles", listRoles);
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/users";
