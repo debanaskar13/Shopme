@@ -1,4 +1,4 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -11,6 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.shopme.admin.user.UserNotFoundException;
+import com.shopme.admin.user.repository.RoleRepository;
+import com.shopme.admin.user.repository.UserRepository;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
@@ -29,6 +32,10 @@ public class UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	public User getByEmail(String email){
+		return userRepo.getUserByEmail(email);
+	}
 
 	public List<User> listAll() {
 		return (List<User>) userRepo.findAll(Sort.by("firstName").ascending());
