@@ -48,7 +48,7 @@ public class UserController {
 		if (roles.isEmpty()) {
 			util.createAllRoles();
 		}
-		return listByPage(1, "firstName", "asc", null , model);
+		return listByPage(1, "id", "asc", null , model);
 	}
 
 	@GetMapping("/users/page/{pageNum}")

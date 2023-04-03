@@ -1,4 +1,4 @@
-package com.shopme.admin.category;
+package com.shopme.admin.category.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -59,4 +59,8 @@ public class Category {
         this(name);
         this.parent = parent;
     }
+
+	public Category(int id) {
+		this.id = id;
+	}
 }

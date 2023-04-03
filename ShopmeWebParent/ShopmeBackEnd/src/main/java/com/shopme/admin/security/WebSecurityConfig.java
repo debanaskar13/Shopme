@@ -38,6 +38,7 @@ public class WebSecurityConfig {
 		.authorizeHttpRequests((request) -> request.requestMatchers("/images/**","/js/**","/webjars/**").permitAll())
 		 .authorizeHttpRequests()
 		 .requestMatchers("/users/**").hasAuthority("Admin")
+		 .requestMatchers("/categories/**").hasAnyAuthority("Admin","Editor")
 		 .anyRequest().authenticated()
 		 .and()
 		.formLogin((form) -> 
