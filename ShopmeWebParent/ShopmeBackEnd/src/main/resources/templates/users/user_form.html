@@ -1,20 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
-	<title>[[${pageTitle}]]</title>
-
-	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-</head>
+<head th:replace="~{fragments :: page_head(${pageTitle})}"></head>
 
 <body>
 	<div class="container-fluid">
-		<div th:replace="fragments :: navbar"></div>
+		<div th:replace="~{navigation :: menu}"></div>
 		<div>
 			<h2>Manage Users | [[${pageTitle}]]</h2>
 
@@ -111,41 +102,13 @@
 			</div>
 		</div>
 
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</div>
 
 
 
 	<script>
-		$(document).ready(function () {
-			$("#buttonCancel").on("click", function () {
-				window.location = "[[@{/users}]]";
-			});
-
-			$("#fileImage").change(function () {
-				fileSize = this.files[0].size;
-
-				if (fileSize > 1048576) {
-					this.setCustomValidity("You must choose an image less than 1MB!");
-					this.reportValidity();
-				} else {
-					this.setCustomValidity("");
-					showImageThumbnail(this);
-				}
-
-			})
-		});
-
-		function showImageThumbnail(fileInput) {
-			var file = fileInput.files[0];
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				$("#thumbnail").attr("src", e.target.result);
-			}
-
-			reader.readAsDataURL(file);
-		}
-
+		moduleURL = "[[@{/}]]";
 		checkEmailUnique = (form) => {
 			url = "[[@{/users/check_email}]]";
 			userId = $("#id").val();
@@ -174,6 +137,7 @@
 		};
 
 	</script>
+	<script th:src="@{/js/common_form.js}"></script>
 </body>
 
 </html>

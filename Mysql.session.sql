@@ -2,5 +2,7 @@
 
 -- SHOW TABLES;
 
-SELECT * FROM users;
+-- SELECT * FROM roles;
+
+select * from categories;
 

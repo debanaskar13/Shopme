@@ -1,23 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	 xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0">
-	<title>Home - Shopme Admin</title>
-
-	<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/css/all.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-</head>
+<head th:replace="~{fragments :: page_head('Users - Shopme Admin')}"></head>
 
 <body>
 	<div class="container-fluid">
 		<!---------------------------------- Navbar Section -------------------------------------->
-		<div th:replace="fragments :: navbar"></div>
+		<div th:replace="~{navigation :: menu}"></div>
 		<div>
 			<h2>Manage Users</h2>
 			<a th:href="@{/users/new}" title="Create New User"><i class="fa-solid fa-user-plus fa-2x icon-dark"></i></a>
@@ -81,13 +71,13 @@
 			<table class="table table-responsive-xl table-bordered table-striped table-hover">
 				<thead class="table-dark">
 					<tr>
-						<th th:replace="fragments :: column_link('id' , 'User ID')" />
+						<th th:replace="~{fragments :: column_link('id' , 'User ID')}" />
 						<th>Photos</th>
-						<th th:replace="fragments :: column_link('email' , 'Email')" />
-						<th th:replace="fragments :: column_link('firstName' , 'First Name')" />
-						<th th:replace="fragments :: column_link('lastName' , 'Last Name')" />
+						<th th:replace="~{fragments :: column_link('email' , 'Email')}" />
+						<th th:replace="~{fragments :: column_link('firstName' , 'First Name')}" />
+						<th th:replace="~{fragments :: column_link('lastName' , 'Last Name')}" />
 						<th>Roles</th>
-						<th th:replace="fragments :: column_link('enabled' , 'Enabled')" />
+						<th th:replace="~{fragments :: column_link('enabled' , 'Enabled')}" />
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -166,22 +156,22 @@
 			<nav>
 				<ul class="pagination justify-content-center flex-wrap">
 					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-						<a th:replace="fragments :: page_link(1 , 'First')" />
+						<a th:replace="~{fragments :: page_link(1 , 'First')}" />
 					</li>
 					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-						<a th:replace="fragments :: page_link(${currentPage - 1} , 'Previous')" />
+						<a th:replace="~{fragments :: page_link(${currentPage - 1} , 'Previous')}" />
 					</li>
 
 					<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
 						th:each="i : ${#numbers.sequence(1,totalPages)}">
-						<a th:replace="fragments :: page_link(${i} , ${i})" />
+						<a th:replace="~{fragments :: page_link(${i} , ${i})}" />
 					</li>
 
 					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-						<a th:replace="fragments :: page_link(${currentPage + 1} , 'Next')" />
+						<a th:replace="~{fragments :: page_link(${currentPage + 1} , 'Next')}" />
 					</li>
 					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-						<a th:replace="fragments :: page_link(${totalPages} , 'Last')" />
+						<a th:replace="~{fragments :: page_link(${totalPages} , 'Last')}" />
 					</li>
 				</ul>
 			</nav>
@@ -205,8 +195,10 @@
 			</div>
 		</div>
 
-		<div th:replace="fragments :: footer"></div>
+		<div th:replace="~{fragments :: footer}"></div>
 	</div>
+	
+	
 	<script type="text/javascript">
 		$(document).ready(
 			function () {

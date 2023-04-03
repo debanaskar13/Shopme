@@ -1,4 +1,4 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shopme.admin.user.UserNotFoundException;
+import com.shopme.admin.user.export.UserCsvExporter;
+import com.shopme.admin.user.export.UserExcelExporter;
+import com.shopme.admin.user.export.UserPdfExporter;
+import com.shopme.admin.user.repository.RoleRepository;
+import com.shopme.admin.user.service.UserService;
 import com.shopme.admin.util.FileUploadUtil;
 import com.shopme.admin.util.Util;
 import com.shopme.common.entity.Role;
@@ -42,7 +48,7 @@ public class UserController {
 		if (roles.isEmpty()) {
 			util.createAllRoles();
 		}
-		return listByPage(1, "firstName", "asc", null , model);
+		return listByPage(1, "id", "asc", null , model);
 	}
 
 	@GetMapping("/users/page/{pageNum}")
@@ -76,7 +82,7 @@ public class UserController {
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);
 
-		return "users";
+		return "users/users";
 	}
 
 	@GetMapping("/users/new")
@@ -89,13 +95,12 @@ public class UserController {
 		model.addAttribute("user", user);
 		model.addAttribute("listRoles", listRoles);
 
-		return "user_form";
+		return "users/user_form";
 	}
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
-		System.out.println(multipartFile.isEmpty());
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
@@ -107,7 +112,6 @@ public class UserController {
 
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 		} else {
-			System.out.println(user.getPhotos().isEmpty());
 			if (user.getPhotos().isEmpty())
 				user.setPhotos(null);
 			userService.save(user);
@@ -131,7 +135,7 @@ public class UserController {
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
 			model.addAttribute("user", user);
 			model.addAttribute("listRoles", listRoles);
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 			return "redirect:/users";
