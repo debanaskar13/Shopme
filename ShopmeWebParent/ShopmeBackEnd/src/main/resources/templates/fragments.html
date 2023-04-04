@@ -35,16 +35,16 @@
 
 
     <div th:fragment="category_actions(category)">
-        <a th:href="@{'/category/edit/'+${category.id}}" title="Edit this category">
+        <a th:href="@{'/categories/edit/'+${category.id}}" title="Edit this category">
             <i class="fa-solid fa-pen-to-square icon-green fa-2x"></i>
         </a>
         &nbsp;
-        <a th:href="@{'/category/delete/'+${category.id}}" title="delete this category" th:userId="${category.id}">
+        <a th:href="@{'/categories/delete/'+${category.id}}" title="delete this category" th:categoryId="${category.id}">
             <i class="fa-solid fa-trash icon-dark fa-2x link-delete"></i>
         </a>
     </div>
     <div th:fragment="category_status(category)">
-        <a th:href="@{'/category/'+${category.id}+'/enabled/'+${category.enabled==false?true:false}}"
+        <a th:href="@{'/categories/'+${category.id}+'/enabled/'+${category.enabled==false?true:false}}"
             th:title="${category.enabled==false?'Enable this category':'Disable this category'}">
             <i th:class="${category.enabled==false?'fa-solid fa-circle fa-2x icon-dark':'fa-solid fa-circle-check fa-2x icon-green'}"></i>
         </a>

@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -63,4 +64,21 @@ public class Category {
 	public Category(int id) {
 		this.id = id;
 	}
+
+    public static Category copyCategory(Category category){
+        Category cat = new Category();
+        cat.id = category.getId();
+        cat.name = category.getName();
+        cat.alias = category.getAlias();
+        cat.image = category.getImage();
+        cat.enabled = category.isEnabled();
+        cat.parent = category.getParent();
+        cat.children = category.getChildren();
+        return cat;
+    }
+
+    @Transient
+    public String getImagePath(){
+        return ( this.image==null || this.id==null || this.image.equals("default.png")) ? "/images/image-thumbnail.png" :  ("/category-images/"+this.id+"/"+this.image);
+    }
 }
