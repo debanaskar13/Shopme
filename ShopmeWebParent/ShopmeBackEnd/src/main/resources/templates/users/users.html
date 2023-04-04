@@ -214,7 +214,7 @@
 					"click",
 					function (e) {
 						e.preventDefault();
-						link = $(this);
+						link = $(this).parent();
 						userId = link.attr("userId");
 						$("#modalBody").text(
 							"Are you sure want to delete this user ID : "
