@@ -3,6 +3,7 @@ package com.shopme.admin.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +89,12 @@ public class UserRepositoryTest {
     @Test
     public void testDeleteUser() {
         this.repository.deleteById(2);
+    }
+
+    @Test
+    public void testIsUserUnique() {
+        Optional<User> user = this.repository.findByEmail("deba123@gmail.com");
+
+        assertThat(user.isPresent()).isFalse();
     }
 }

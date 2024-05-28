@@ -1,0 +1,35 @@
+<div th:fragment="user_table">
+    <table class="table table-bordered table-striped table-hover table-responsive-xl">
+        <thead class="table-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Photos</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Roles</th>
+                <th>Enabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${listUsers}">
+                <td>[[${user.id}]]</td>
+                <td></td>
+                <td>[[${user.email}]]</td>
+                <td>[[${user.firstName}]]</td>
+                <td>[[${user.lastName}]]</td>
+                <td>
+                    <span th:each="role,iter : ${user.roles}">
+                        <span th:if="${iter.index}  < ${user.roles.size()} - 1">[[${role.name}]], </span>
+                        <span th:unless="${iter.index}  < ${user.roles.size()} - 1">[[${role.name}]]</span>
+                    </span>
+                </td>
+                <td>[[${user.enabled}]]</td>
+                <td>
+                    Edit  Delete
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
